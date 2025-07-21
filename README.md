@@ -21,9 +21,9 @@ Research a minimum of three AI algorithms that are suitable for addressing the o
 1. Describe three AI algorithms that you considered in your research.
 
 2. Determine which algorithm you will use for the remainder of the task, and provide a justification by doing the following:
-   a. Describe how the selected algorithm relates to the specified optimization problem.
-   b. Describe at least two strengths of the selected algorithm in addressing the specified optimization problem.
-   c. Describe at least two potential limitations of the selected algorithm in addressing the specified optimization problem.
+    1. Describe how the selected algorithm relates to the specified optimization problem.
+    2. Describe at least two strengths of the selected algorithm in addressing the specified optimization problem.
+    3. Describe at least two potential limitations of the selected algorithm in addressing the specified optimization problem.
 
 ## C. Implement
 
