@@ -1,0 +1,38 @@
+﻿Feature,Description
+datetimeEpoch,Timestamp of the recorded data.
+tempmax,Maximum temperature for the day (°F).
+tempmin,Minimum temperature for the day (°F).
+temp,Average temperature for the day (°F).
+feelslikemax,"Maximum ""feels like"" temperature for the day (°F)."
+feelslikemin,"Minimum ""feels like"" temperature for the day (°F)."
+feelslike,"Average ""feels like"" temperature for the day (°F)."
+pm2.5,Particulate matter with a diameter of 2.5 micrometers or less (pollutants)
+no2,Nitrogen (pollutants)
+co2,Carbon Dioxide (pollutants)
+dew,Dew point temperature (°F).
+humidity,Relative humidity percentage.
+precip,Total precipitation for the day (inches).
+precipprob,Probability of precipitation (percentage).
+precipcover,Coverage of precipitation (percentage).
+windgust,Maximum wind gust speed (mph).
+windspeed,Average wind speed (mph).
+winddir,Wind direction (degrees).
+pressure,Atmospheric pressure (hPa).
+cloudcover,Cloud cover percentage.
+visibility,Visibility distance (miles).
+solarradiation,Solar radiation (W/m²).
+solarenergy,Solar energy received (kWh).
+uvindex,UV index level.
+severerisk,"Risk level of severe weather (e.g., low, moderate, high)."
+sunriseEpoch,Timestamp when the sun appears to rise above the horizon.
+sunsetEpoch,Timestamp when the sun appears to sink below the horizon.
+moonphase,"Phase of the moon (e.g., new moon, full moon)."
+description,Detailed description of the weather conditions.
+tempRange,Temperature range for the day (difference between max and min temperatures).
+heatIndex,Heat index value for the day.
+severityScore,Score representing the severity of weather conditions.
+conditionCode,Code representing specific weather conditions.
+month,Month of the year.
+dayOfWeek,Day of the week.
+isWeekend,Indicator if the day is a weekend.
+healthRiskScore,Score representing the potential health risk based on weather and air quality conditions.
