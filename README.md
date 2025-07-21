@@ -26,5 +26,3 @@ D.  Test and validate the algorithm by doing the following:
     4.  Describe at least one area for improvement based on your evaluation from part D2. Include your response in the narrative report from part B.
 E.  Acknowledge sources, using in-text citations and references, for content that is quoted, paraphrased, or summarized.
 F.  Demonstrate professional communication in the content and presentation of your submission.
-
-Test
