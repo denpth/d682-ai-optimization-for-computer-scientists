@@ -134,3 +134,21 @@ rf = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
 rf.fit(X_train, y_train)
 y_pred = rf.predict(X_test)
 
+# Holdout evaluation on Test
+rmse_test = root_mean_squared_error(y_test, y_pred)
+r2_test   = r2_score(y_test, y_pred)
+
+print("Holdout RMSE:", rmse_test)
+print("Holdout R²:",  r2_test)
+
+# Cross-validation on TRAIN ONLY
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
+scoring = {"r2": "r2", "rmse": "neg_root_mean_squared_error"}
+
+scores = cross_validate(rf, X_train, y_train, cv=cv, scoring=scoring, n_jobs=-1)
+
+rmse_cv = -scores["test_rmse"]
+r2_cv   =  scores["test_r2"]
+
+print("CV RMSE (mean ± std): {:.4f} ± {:.4f}".format(rmse_cv.mean(), rmse_cv.std()))
+print("CV R²   (mean ± std): {:.4f} ± {:.4f}".format(r2_cv.mean(), r2_cv.std()))
