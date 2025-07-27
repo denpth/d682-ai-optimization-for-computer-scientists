@@ -296,3 +296,43 @@ final_ensemble.fit(X_train_scaled, y_train)
 # Perform final prediction
 final_prediction = final_ensemble.predict(X_test_scaled)
 
+# Calculate final optimized model performance
+final_rmse = root_mean_squared_error(y_test, final_prediction)
+final_r2 = r2_score(y_test, final_prediction)
+
+# Calculate CV performance for final model
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
+scoring = {"r2": "r2", "rmse": "neg_root_mean_squared_error"}
+
+# Perform cross-validation on the final ensemble
+final_cv_scores = cross_validate(final_ensemble, X_train_scaled, y_train, cv=cv, scoring=scoring, n_jobs=-1)
+final_rmse_cv = -final_cv_scores["test_rmse"]
+final_r2_cv = final_cv_scores["test_r2"]
+
+# Calculate final optimized model performance
+final_rmse = root_mean_squared_error(y_test, final_prediction)
+final_r2 = r2_score(y_test, final_prediction)
+
+# Calculate CV performance for final model
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
+scoring = {"r2": "r2", "rmse": "neg_root_mean_squared_error"}
+
+# Perform cross-validation on the final ensemble
+final_cv_scores = cross_validate(final_ensemble, X_train_scaled, y_train, cv=cv, scoring=scoring, n_jobs=-1)
+final_rmse_cv = -final_cv_scores["test_rmse"]
+final_r2_cv = final_cv_scores["test_r2"]
+
+# Task C: Model Evaluation and Performance Comparison
+
+
+print("\n" + "="*80)
+print("PART C: MODEL EVALUATION AND PERFORMANCE COMPARISON")
+print("="*80)
+
+print(f"\nFINAL OPTIMIZED MODEL PERFORMANCE:")
+print("="*50)
+print(f"Test RMSE: {final_rmse:.4f}")
+print(f"Test R²: {final_r2:.4f}")
+print(f"CV RMSE: {final_rmse_cv.mean():.4f} ± {final_rmse_cv.std():.4f}")
+print(f"CV R²: {final_r2_cv.mean():.4f} ± {final_r2_cv.std():.4f}")
+
