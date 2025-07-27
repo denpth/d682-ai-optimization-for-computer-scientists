@@ -228,3 +228,71 @@ print(f"Regularized RF RMSE: {rf_reg_rmse:.4f}, R²: {rf_reg_r2:.4f}")
 
 print("Training regularized Random Forest on selected features...")
 
+# ============================================================================
+# STEP 5: ENSEMBLE TECHNIQUE 1 - Voting Ensemble
+# ============================================================================
+print("\n" + "-"*60)
+print("STEP 5: ENSEMBLE TECHNIQUE 1 - Voting Ensemble")
+print("-"*60)
+
+# Create individual models for the voting ensemble
+rf_for_ensemble = RandomForestRegressor(**best_params, random_state=42, n_jobs=-1)
+gb_for_ensemble = GradientBoostingRegressor(n_estimators=100, random_state=42)
+
+# Create voting ensemble (using models that work well together)
+voting_ensemble = VotingRegressor([
+    ('rf', rf_for_ensemble),
+    ('gb', gb_for_ensemble),
+    ('ridge', ridge_cv)
+])
+
+print("Training voting ensemble...")
+# Train on scaled features for consistency
+voting_ensemble.fit(X_train_scaled, y_train)
+
+# Evaluate voting ensemble performance
+voting_pred = voting_ensemble.predict(X_test_scaled)
+voting_rmse = root_mean_squared_error(y_test, voting_pred)
+voting_r2 = r2_score(y_test, voting_pred)
+print(f"Voting Ensemble RMSE: {voting_rmse:.4f}, R²: {voting_r2:.4f}")
+
+# ============================================================================
+# STEP 6: ENSEMBLE TECHNIQUE 2 - Gradient Boosting Ensemble
+# ============================================================================
+print("\n" + "-"*60)
+print("STEP 6: ENSEMBLE TECHNIQUE 2 - Gradient Boosting Ensemble")
+print("-"*60)
+
+# XGBoost with selected features
+print("Training XGBoost...")
+xgb_model = xgb.XGBRegressor(
+    n_estimators=200,
+    max_depth=6,
+    learning_rate=0.1,
+    subsample=0.8,
+    colsample_bytree=0.8,
+    random_state=42,
+    n_jobs=-1
+)
+xgb_model.fit(X_train, y_train)
+
+# Evaluate XGBoost performance
+xgb_pred = xgb_model.predict(X_test)
+xgb_rmse = root_mean_squared_error(y_test, xgb_pred)
+xgb_r2 = r2_score(y_test, xgb_pred)
+print(f"XGBoost RMSE: {xgb_rmse:.4f}, R²: {xgb_r2:.4f}")
+
+# Create final ensemble combining all techniques
+print("\nCreating final ensemble combining all techniques...")
+final_ensemble = VotingRegressor([
+    ('rf_regularized', rf_regularized),
+    ('voting_ensemble', voting_ensemble),
+    ('xgb', xgb_model)
+], weights=[0.3, 0.4, 0.3])
+
+# Train final ensemble on scaled features
+final_ensemble.fit(X_train_scaled, y_train)
+
+# Perform final prediction
+final_prediction = final_ensemble.predict(X_test_scaled)
+
