@@ -170,3 +170,61 @@ print(f"Best CV score: {-rf_random.best_score_:.4f}")
 # Store optimized parameters for later use
 best_params = rf_random.best_params_
 
+# ============================================================================
+# STEP 3: RIDGE REGRESSION
+# ============================================================================
+print("\n" + "-"*60)
+print("STEP 3: RIDGE REGRESSION")
+print("-"*60)
+
+# Scale the selected features for Ridge regression
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Apply Ridge regression with cross-validation
+from sklearn.linear_model import RidgeCV
+
+ridge_alphas = [0.1, 1.0, 10.0, 100.0, 1000.0]
+ridge_cv = RidgeCV(alphas=ridge_alphas, cv=5, scoring='neg_root_mean_squared_error')
+ridge_cv.fit(X_train_scaled, y_train)
+
+print(f"Ridge Regression - Best alpha: {ridge_cv.alpha_}")
+
+# Evaluate Ridge performance
+ridge_pred = ridge_cv.predict(X_test_scaled)
+ridge_rmse = root_mean_squared_error(y_test, ridge_pred)
+ridge_r2 = r2_score(y_test, ridge_pred)
+print(f"Ridge RMSE: {ridge_rmse:.4f}, R²: {ridge_r2:.4f}")
+
+# ============================================================================
+# STEP 4: REGULARIZED RANDOM FOREST PARAMETERS
+# ============================================================================
+print("\n" + "-"*60)
+print("STEP 4: REGULARIZED RANDOM FOREST PARAMETERS")
+print("-"*60)
+
+# Apply regularization constraints to the optimized Random Forest
+# Use the best parameters from hyperparameter tuning but add regularization
+regularized_params = best_params.copy()
+regularized_params.update({
+    'max_depth': min(regularized_params.get('max_depth', 20), 15),  # Limit depth
+    'min_samples_split': max(regularized_params.get('min_samples_split', 2), 10),  # Increase min samples
+    'min_samples_leaf': max(regularized_params.get('min_samples_leaf', 1), 5),     # Increase min leaf samples
+    'max_features': 'sqrt'  # Limit features per split
+})
+
+print(f"Regularized parameters: {regularized_params}")
+
+# Create regularized Random Forest with optimized + regularized parameters
+rf_regularized = RandomForestRegressor(**regularized_params, random_state=42, n_jobs=-1)
+rf_regularized.fit(X_train, y_train)
+
+# Evaluate regularized RF performance
+rf_reg_pred = rf_regularized.predict(X_test)
+rf_reg_rmse = root_mean_squared_error(y_test, rf_reg_pred)
+rf_reg_r2 = r2_score(y_test, rf_reg_pred)
+print(f"Regularized RF RMSE: {rf_reg_rmse:.4f}, R²: {rf_reg_r2:.4f}")
+
+print("Training regularized Random Forest on selected features...")
+
